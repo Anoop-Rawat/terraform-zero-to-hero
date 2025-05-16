@@ -5,9 +5,13 @@ provider "aws" {
 resource "aws_instance" "example" {
     ami           = "ami-053b0d53c279acc90"  # Specify an appropriate AMI ID
     instance_type = "t2.micro"
+    
     tags = {
-    Name        = "MyEC2Instance"
-    Environment = "Dev"
-    Project     = "TerraformDemo"
-  }
+        Name        = "MyEC2Instance"
+        Environment = "Dev"
+    }
+
+    lifecycle {
+        ignore_changes = [tags,instance_type] # if anything changes via console on tag, instance type , it will ignore by tf
+    }
 }
