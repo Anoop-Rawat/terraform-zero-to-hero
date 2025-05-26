@@ -137,8 +137,7 @@ You can retrieve the Role ID using the Vault CLI:
 
 ```bash
 vault read auth/approle/role/my-approle/role-id # change my-approle to terraform as per role name created above
-role_id    74ca799d-2d83-d3f5-5f1c-64a124027b8c
-secret_id             2c51a853-1a6d-f36b-2807-ba617244d6c5
+
 ```
 
 Save the Role ID for use in your Terraform configuration.
