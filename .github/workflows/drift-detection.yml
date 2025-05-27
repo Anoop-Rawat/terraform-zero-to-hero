@@ -50,3 +50,10 @@ jobs:
           else
             echo "✅ No drift detected."
           fi
+
+      - name: Upload Plan Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-drift-plan
+          path: Day-8-Migration-DriftDetection/Scenerio-2/plan_output.txt
+
