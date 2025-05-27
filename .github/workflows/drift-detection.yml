@@ -37,18 +37,16 @@ jobs:
       - name: Terraform Refresh-Only Plan
         id: plan
         run: |
-          terraform plan -refresh-only -no-color -detailed-exitcode
-          echo "exitcode=$?" >> "$GITHUB_OUTPUT"
+          terraform plan -refresh-only -no-color -out=tfplan || echo "Terraform plan completed"
+          terraform show -no-color tfplan > plan_output.txt
         working-directory: Day-8-Migration-DriftDetection/Scenerio-2
 
-      - name: Check for Drift Result
+      - name: Check for Drift in Plan Output
         run: |
-          if [[ "${{ steps.plan.outputs.exitcode }}" == "0" ]]; then
-            echo "✅ No drift detected."
-          elif [[ "${{ steps.plan.outputs.exitcode }}" == "2" ]]; then
+          if grep -q "Note: Objects have changed outside of Terraform" Day-8-Migration-DriftDetection/Scenerio-2/plan_output.txt; then
             echo "❌ Drift detected!"
+            cat Day-8-Migration-DriftDetection/Scenerio-2/plan_output.txt
             exit 1
           else
-            echo "⚠️ Unexpected error occurred during terraform plan."
-            exit 1
+            echo "✅ No drift detected."
           fi
