@@ -52,8 +52,9 @@ jobs:
           fi
 
       - name: Upload Plan Output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: terraform-drift-plan
           path: Day-8-Migration-DriftDetection/Scenerio-2/plan_output.txt
+
 
