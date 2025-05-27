@@ -4,6 +4,6 @@ provider "aws" {
 
 
 import {
-    id = "i-02b165cf9fa96352c"
-    to = aws_instance.example   
+    id = "i-0f87206224c2477cc"
+    to = aws_instance.example1   
 }
