@@ -36,11 +36,13 @@ jobs:
 
       - name: Terraform Refresh-Only Plan
         id: plan
-        run: terraform plan -refresh-only -detailed-exitcode
+        run: |
+          terraform plan -refresh-only -no-color -detailed-exitcode
+          echo "exitcode=$?" >> "$GITHUB_OUTPUT"
         working-directory: Day-8-Migration-DriftDetection/Scenerio-2
 
       - name: Fail if Drift Detected
-        if: steps.plan.outcome == 'failure' || steps.plan.outputs.exitcode == '2'
+        if: steps.plan.outputs.exitcode == '2'
         run: |
-          echo "Drift detected!"
+          echo "❌ Drift detected!"
           exit 1
