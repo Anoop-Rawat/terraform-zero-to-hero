@@ -2,7 +2,7 @@ name: Terraform Drift Detection
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # Every day at 03:00 UTC
+    #- cron: '0 3 * * *'  # Every day at 03:00 UTC
   workflow_dispatch:     # Manual trigger option
 
 jobs:
@@ -37,8 +37,8 @@ jobs:
       - name: Terraform Refresh-Only Plan
         id: plan
         run: |
-          terraform plan -refresh-only -no-color -out=tfplan || echo "Terraform plan completed"
-          terraform show -no-color tfplan > plan_output.txt
+          terraform plan -refresh-only -out=tfplan || echo "Terraform plan completed"
+          terraform show tfplan > plan_output.txt
         working-directory: Day-8-Migration-DriftDetection/Scenerio-2
 
       - name: Check for Drift in Plan Output
