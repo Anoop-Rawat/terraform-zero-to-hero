@@ -32,10 +32,12 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: terraform
 
       - name: Terraform Refresh-Only Plan
         id: plan
         run: terraform plan -refresh-only -detailed-exitcode
+        working-directory: terraform
 
       - name: Fail if Drift Detected
         if: steps.plan.outcome == 'failure' || steps.plan.outputs.exitcode == '2'
