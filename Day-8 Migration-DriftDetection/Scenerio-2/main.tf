@@ -9,7 +9,7 @@ resource "aws_instance" "example" {
     tags = {
         Name        = "MyEC2Instance"
         Environment = "Dev"
-        Manual = "Tag"
+        
     }
 
     # lifecycle {
