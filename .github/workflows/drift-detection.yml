@@ -35,7 +35,7 @@ jobs:
 
       - name: Terraform Refresh-Only Plan
         id: plan
-        run: terraform plan -refresh-only -no-color -detailed-exitcode
+        run: terraform plan -refresh-only -detailed-exitcode
 
       - name: Fail if Drift Detected
         if: steps.plan.outcome == 'failure' || steps.plan.outputs.exitcode == '2'
