@@ -1,0 +1,44 @@
+name: Terraform Drift Detection
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Every day at 03:00 UTC
+  workflow_dispatch:     # Manual trigger option
+
+jobs:
+  detect-drift:
+    runs-on: ubuntu-latest
+    name: Check for Terraform Drift
+
+    env:
+      AWS_REGION: us-east-1  # Adjust as needed
+      TF_IN_AUTOMATION: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7  # or your preferred version
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Refresh-Only Plan
+        id: plan
+        run: terraform plan -refresh-only -no-color -detailed-exitcode
+
+      - name: Fail if Drift Detected
+        if: steps.plan.outcome == 'failure' || steps.plan.outputs.exitcode == '2'
+        run: |
+          echo "Drift detected!"
+          exit 1
