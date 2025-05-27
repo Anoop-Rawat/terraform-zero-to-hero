@@ -41,8 +41,14 @@ jobs:
           echo "exitcode=$?" >> "$GITHUB_OUTPUT"
         working-directory: Day-8-Migration-DriftDetection/Scenerio-2
 
-      - name: Fail if Drift Detected
-        if: steps.plan.outputs.exitcode == '2'
+      - name: Check for Drift Result
         run: |
-          echo "❌ Drift detected!"
-          exit 1
+          if [[ "${{ steps.plan.outputs.exitcode }}" == "0" ]]; then
+            echo "✅ No drift detected."
+          elif [[ "${{ steps.plan.outputs.exitcode }}" == "2" ]]; then
+            echo "❌ Drift detected!"
+            exit 1
+          else
+            echo "⚠️ Unexpected error occurred during terraform plan."
+            exit 1
+          fi
