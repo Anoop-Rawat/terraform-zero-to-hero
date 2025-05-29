@@ -37,8 +37,7 @@ jobs:
       - name: Terraform Refresh-Only Plan
         id: plan
         run: |
-          terraform plan -refresh-only -out=tfplan || echo "Terraform plan completed"
-          terraform show tfplan > plan_output.txt
+          terraform plan -refresh-only -out=tfplan
         working-directory: Day-8-Migration-DriftDetection/Scenerio-2
 
       - name: Check for Drift in Plan Output
