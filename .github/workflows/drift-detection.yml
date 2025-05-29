@@ -38,11 +38,12 @@ jobs:
         id: plan
         run: |
           terraform plan -refresh-only -out=tfplan
+          terraform show tfplan > plan_output.txt
         working-directory: Day-8-Migration-DriftDetection/Scenerio-2
 
       - name: Check for Drift in Plan Output
         run: |
-          if grep -q "Note: Objects have changed outside of Terraform" Day-8-Migration-DriftDetection/Scenerio-2/plan_output.txt; then
+          if grep -q "Objects have changed outside of Terraform" Day-8-Migration-DriftDetection/Scenerio-2/plan_output.txt; then
             echo "❌ Drift detected!"
             cat Day-8-Migration-DriftDetection/Scenerio-2/plan_output.txt
             exit 1
